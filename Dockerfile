@@ -1,9 +1,9 @@
 # NOTE: only add file if building for arm
 ARG ARCH=""
 ARG QEMU=other
-FROM ${ARCH}php:7.3-apache as build_arm
+FROM ${ARCH}php:7.4-apache AS build_arm
 ONBUILD COPY --from=balenalib/rpi-alpine:3.10 /usr/bin/qemu-arm-static /usr/bin/qemu-arm-static
-FROM ${ARCH}php:7.3-apache as build_other
+FROM ${ARCH}php:7.4-apache AS build_other
 
 FROM build_${QEMU}
 #Shared layer between rainloop and roundcube
@@ -15,9 +15,9 @@ RUN apt-get update && apt-get install -y \
 # Shared layer between nginx, dovecot, postfix, postgresql, rspamd, unbound, rainloop, roundcube
 RUN pip3 install socrate
 
-ENV ROUNDCUBE_URL https://github.com/roundcube/roundcubemail/releases/download/1.4.9/roundcubemail-1.4.9-complete.tar.gz
+ENV ROUNDCUBE_URL https://github.com/roundcube/roundcubemail/releases/download/1.6.2/roundcubemail-1.6.2-complete.tar.gz
 
-ENV CARDDAV_URL https://github.com/blind-coder/rcmcarddav/releases/download/v3.0.3/carddav-3.0.3.tar.bz2
+ENV CARDDAV_URL https://github.com/blind-coder/rcmcarddav/releases/download/v5.0.1/carddav-v5.0.1.tar.gz
 
 ENV MFA_URL https://github.com/alexandregz/twofactor_gauthenticator.git 
 
@@ -32,10 +32,8 @@ RUN apt-get update && apt-get install -y \
  && curl -L -O ${ROUNDCUBE_URL} \
  && curl -L -O ${CARDDAV_URL} \
  && git clone  ${MFA_URL} \
- && tar -xf *.tar.gz \
- && tar -xf *.tar.bz2 \
+ && ls *.tar.gz |xargs -n1 tar -xzf \
  && rm -f *.tar.gz \
- && rm -f *.tar.bz2 \
  && mv roundcubemail-* html \
  && mv carddav html/plugins/ \
  && mv twofactor_gauthenticator html/plugins/ \
