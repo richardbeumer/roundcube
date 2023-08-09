@@ -7,8 +7,16 @@ from socrate import conf
 import subprocess
 
 log.basicConfig(stream=sys.stderr, level=os.environ.get("LOG_LEVEL", "WARNING"))
+env = os.environ
 
-os.environ["MAX_FILESIZE"] = str(int(int(os.environ.get("MESSAGE_SIZE_LIMIT"))*0.66/1048576))
+context = {}
+context.update(env)
+
+os.environ["MAX_FILESIZE"] = str(int(int(env.get("MESSAGE_SIZE_LIMIT"))*0.66/1048576))
+with open("/etc/resolv.conf") as handle:
+    content = handle.read().split()
+    resolver = content[content.index("nameserver") + 1]
+    context["RESOLVER"] = f"[{resolver}]" if ":" in resolver else resolver
 
 db_flavor=os.environ.get("ROUNDCUBE_DB_FLAVOR",os.environ.get("DB_FLAVOR","sqlite"))
 if db_flavor=="sqlite":
@@ -63,5 +71,12 @@ os.system("chown -R www-data:www-data /data")
 # Tail roundcube logs
 subprocess.Popen(["tail","-f","-n","0","/var/www/html/logs/errors.log"])
 
-# Run apache
-os.execv("/usr/local/bin/apache2-foreground", ["apache2-foreground"])
+# Configure nginx
+conf.jinja("/conf/nginx-webmail.conf", context, "/etc/nginx/http.d/webmail.conf")
+if os.path.exists("/var/run/nginx.pid"):
+    os.system("nginx -s reload")
+
+
+# Run nginx
+os.system("php-fpm81")
+os.execv("/usr/sbin/nginx", ["nginx", "-g", "daemon off;"])
