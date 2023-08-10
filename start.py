@@ -78,5 +78,5 @@ if os.path.exists("/var/run/nginx.pid"):
 
 
 # Run nginx
-os.system("php-fpm81")
+os.system("php-fpm82")
 os.execv("/usr/sbin/nginx", ["nginx", "-g", "daemon off;"])

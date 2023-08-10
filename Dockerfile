@@ -1,5 +1,5 @@
 # NOTE: only add file if building for arm
-FROM php:8.1-alpine AS build
+FROM php:8.2-alpine AS build
 
 ARG MAILU_UID=1000
 ARG MAILU_GID=1000
@@ -24,10 +24,10 @@ ENV MFA_URL https://github.com/alexandregz/twofactor_gauthenticator.git
 
 RUN  apk add --update --no-cache \
     libzip-dev libpq-dev \
-    php81 php81-fpm php81-mbstring php81-zip php81-xml php81-simplexml php81-pecl-apcu \
-    php81-dom php81-curl php81-exif gd php81-gd php81-iconv php81-intl php81-openssl php81-ctype \
-    php81-pdo_sqlite php81-pdo_mysql php81-pdo_pgsql php81-pdo php81-sodium libsodium php81-tidy php81-pecl-uuid \
-    php81-pspell php81-pecl-imagick php81-opcache php81-session php81-sockets php81-fileinfo php81-xmlreader php81-xmlwriter \
+    php82 php82-fpm php82-mbstring php82-zip php82-xml php82-simplexml php82-pecl-apcu \
+    php82-dom php82-curl php82-exif gd php82-gd php82-iconv php82-intl php82-openssl php82-ctype \
+    php82-pdo_sqlite php82-pdo_mysql php82-pdo_pgsql php82-pdo php82-sodium libsodium php82-tidy php82-pecl-uuid \
+    php82-pspell php82-pecl-imagick php82-opcache php82-session php82-sockets php82-fileinfo php82-xmlreader php82-xmlwriter \
     aspell-uk aspell-ru aspell-fr aspell-de aspell-en \
  && docker-php-ext-install zip pdo_mysql pdo_pgsql \
  && echo date.timezone=UTC > /usr/local/etc/php/conf.d/timezone.ini \
@@ -45,11 +45,11 @@ RUN  apk add --update --no-cache \
  && rm -rf CHANGELOG INSTALL LICENSE README.md UPGRADING composer.json-dist installer \
  && rm -rf plugins/{autologon,example_addressbook,http_authentication,krb_authentication,new_user_identity,password,redundant_attachments,squirrelmail_usercopy,userinfo,virtuser_file,virtuser_query} \
  && rm /etc/nginx/http.d/default.conf \
- && rm /etc/php81/php-fpm.d/www.conf 
+ && rm /etc/php82/php-fpm.d/www.conf 
 
 COPY php.ini /php.ini
 COPY config.inc.php /var/www/html/config/
-COPY php-webmail.conf /etc/php81/php-fpm.d/
+COPY php-webmail.conf /etc/php82/php-fpm.d/
 COPY nginx-webmail.conf /conf/
 COPY start.py /start.py
 COPY snuffleupagus.rules /etc/snuffleupagus.rules.tpl
