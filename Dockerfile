@@ -16,9 +16,9 @@ RUN python3 -m ensurepip
 # Shared layer between nginx, dovecot, postfix, postgresql, rspamd, unbound, rainloop, roundcube
 RUN pip3 install socrate
 
-ENV ROUNDCUBE_URL https://github.com/roundcube/roundcubemail/releases/download/1.6.2/roundcubemail-1.6.2-complete.tar.gz
+ENV ROUNDCUBE_URL https://github.com/roundcube/roundcubemail/releases/download/1.6.3/roundcubemail-1.6.3-complete.tar.gz
 
-ENV CARDDAV_URL https://github.com/blind-coder/rcmcarddav/releases/download/v5.0.1/carddav-v5.0.1.tar.gz
+ENV CARDDAV_URL https://github.com/blind-coder/rcmcarddav/releases/download/v5.1.0/carddav-v5.1.0.tar.gz
 
 ENV MFA_URL https://github.com/alexandregz/twofactor_gauthenticator.git 
 
