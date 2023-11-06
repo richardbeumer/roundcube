@@ -12,11 +12,12 @@ RUN apk add --update --no-cache \
   python3 curl git nginx
 
 RUN python3 -m ensurepip
+RUN pip3 install --upgrade pip setuptools
 
 # Shared layer between nginx, dovecot, postfix, postgresql, rspamd, unbound, rainloop, roundcube
 RUN pip3 install socrate
 
-ENV ROUNDCUBE_URL https://github.com/roundcube/roundcubemail/releases/download/1.6.3/roundcubemail-1.6.3-complete.tar.gz
+ENV ROUNDCUBE_URL https://github.com/roundcube/roundcubemail/releases/download/1.6.5/roundcubemail-1.6.5-complete.tar.gz
 
 ENV CARDDAV_URL https://github.com/blind-coder/rcmcarddav/releases/download/v5.1.0/carddav-v5.1.0.tar.gz
 
