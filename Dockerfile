@@ -11,7 +11,10 @@ RUN addgroup -Sg ${MAILU_GID} mailu \
 RUN apk add --update --no-cache \
   python3 curl git nginx
 
+RUN pip3 install --upgrade pip setuptools
+
 RUN python3 -m ensurepip
+
 
 # Shared layer between nginx, dovecot, postfix, postgresql, rspamd, unbound, rainloop, roundcube
 RUN pip3 install socrate
