@@ -11,6 +11,9 @@ RUN addgroup -Sg ${MAILU_GID} mailu \
 RUN apk add --update --no-cache \
   python3 curl git nginx
 
+RUN python3 -m venv /temp/venv
+RUN /temp/venv/bin/activate
+
 RUN python3 -m ensurepip
 RUN pip3 install --upgrade pip setuptools
 
