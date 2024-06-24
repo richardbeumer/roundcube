@@ -25,12 +25,24 @@ $front = getenv('FRONT_ADDRESS') ? getenv('FRONT_ADDRESS') : 'front';
 $imap  = getenv('IMAP_ADDRESS')  ? getenv('IMAP_ADDRESS')  : 'imap';
 
 // Mail servers
-$config['default_host'] = $front;
-$config['default_port'] = 10143;
-$config['smtp_server'] = $front;
-$config['smtp_port'] = 10025;
+$config['imap_host'] = 'tls://{{ FRONT_ADDRESS or "front" }}:10143';
+$config['imap_conn_options'] = array(
+  'ssl'         => array(
+     'verify_peer'  => false,
+     'verify_peer_name' => false,
+     'allow_self_signed' => true,
+   ),
+);
+$config['smtp_host'] = 'tls://{{ FRONT_ADDRESS or "front" }}:10025';
 $config['smtp_user'] = '%u';
 $config['smtp_pass'] = '%p';
+$config['smtp_conn_options'] = array(
+  'ssl'         => array(
+     'verify_peer'  => false,
+     'verify_peer_name' => false,
+     'allow_self_signed' => true,
+   ),
+);
 
 // Sieve script management
 $config['managesieve_host'] = $imap;
