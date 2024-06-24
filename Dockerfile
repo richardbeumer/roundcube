@@ -4,7 +4,14 @@ FROM php:8.3-alpine AS build
 ARG MAILU_UID=1000
 ARG MAILU_GID=1000
 
-ENV VIRTUAL_ENV=/app/venv
+ENV \
+  VIRTUAL_ENV=/app/venv \
+  PATH="/app/venv/bin:${PATH}" \
+  ROUNDCUBE_URL=https://github.com/roundcube/roundcubemail/releases/download/1.6.7/roundcubemail-1.6.7-complete.tar.gz \
+  CARDDAV_URL=https://github.com/blind-coder/rcmcarddav/releases/download/v5.1.0/carddav-v5.1.0.tar.gz \
+  MFA_URL=https://github.com/alexandregz/twofactor_gauthenticator.git 
+  
+
 
 RUN addgroup -Sg ${MAILU_GID} mailu \
   && adduser -Sg ${MAILU_UID} -G mailu -h /app -g "mailu app" -s /bin/sh mailu
@@ -13,19 +20,12 @@ RUN addgroup -Sg ${MAILU_GID} mailu \
 RUN apk add --update --no-cache \
   python3 curl git nginx
 
-
 RUN set -euxo pipefail \
   ; apk add --no-cache py3-pip \
   ; python3 -m venv ${VIRTUAL_ENV} \
   ; ${VIRTUAL_ENV}/bin/pip install --no-cache-dir socrate \
   ; apk del -r py3-pip \
   ; rm -f /tmp/*.pem
-
-ENV ROUNDCUBE_URL https://github.com/roundcube/roundcubemail/releases/download/1.6.7/roundcubemail-1.6.7-complete.tar.gz
-
-ENV CARDDAV_URL https://github.com/blind-coder/rcmcarddav/releases/download/v5.1.0/carddav-v5.1.0.tar.gz
-
-ENV MFA_URL https://github.com/alexandregz/twofactor_gauthenticator.git 
 
 RUN  apk add --update --no-cache \
     libzip-dev libpq-dev \
