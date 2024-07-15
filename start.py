@@ -39,7 +39,8 @@ else:
     print("Unknown ROUNDCUBE_DB_FLAVOR: %s",db_flavor)
     exit(1)
 
-
+print("Database type:",db_flavor)
+print("Constring: ", os.environ.get("DB_DSNW"))
 
 conf.jinja("/php.ini", os.environ, "/usr/local/etc/php/conf.d/roundcube.ini")
 
