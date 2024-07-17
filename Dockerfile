@@ -10,8 +10,11 @@ ENV \
   ROUNDCUBE_URL=https://github.com/roundcube/roundcubemail/releases/download/1.6.7/roundcubemail-1.6.7-complete.tar.gz \
   CARDDAV_URL=https://github.com/blind-coder/rcmcarddav/releases/download/v5.1.0/carddav-v5.1.0.tar.gz \
   MFA_URL=https://github.com/alexandregz/twofactor_gauthenticator.git 
-  
 
+WORKDIR /app  
+
+COPY libs/ libs/
+COPY requirements.txt ./
 
 RUN addgroup -Sg ${MAILU_GID} mailu \
   && adduser -Sg ${MAILU_UID} -G mailu -h /app -g "mailu app" -s /bin/sh mailu
@@ -23,7 +26,7 @@ RUN apk add --update --no-cache \
 RUN set -euxo pipefail \
   ; apk add --no-cache py3-pip \
   ; python3 -m venv ${VIRTUAL_ENV} \
-  ; ${VIRTUAL_ENV}/bin/pip install --no-cache-dir socrate \
+  ; ${VIRTUAL_ENV}/bin/pip install --no-cache-dir -r requirements.txt \
   ; apk del -r py3-pip \
   ; rm -f /tmp/*.pem
 
@@ -43,17 +46,17 @@ RUN  apk add --update --no-cache \
  && git clone  ${MFA_URL} \
  && ls *.tar.gz |xargs -n1 tar -xzf \
  && rm -f *.tar.gz \
- && mv roundcubemail-* html \
- && mv carddav html/plugins/ \
- && mv twofactor_gauthenticator html/plugins/ \
- && cd html \
+ && mv roundcubemail-* roundcube \
+ && mv carddav roundcube/plugins/ \
+ && mv twofactor_gauthenticator roundcube/plugins/ \
+ && cd roundcube \
  && rm -rf CHANGELOG INSTALL LICENSE README.md UPGRADING composer.json-dist installer \
  && rm -rf plugins/{autologon,example_addressbook,http_authentication,krb_authentication,new_user_identity,password,redundant_attachments,squirrelmail_usercopy,userinfo,virtuser_file,virtuser_query} \
  && rm /etc/nginx/http.d/default.conf \
  && rm /etc/php83/php-fpm.d/www.conf 
 
-COPY php.ini /php.ini
-COPY config.inc.php /var/www/html/config/
+COPY php.ini /defaults/
+COPY config.inc.php /conf/
 COPY php-webmail.conf /etc/php83/php-fpm.d/
 COPY nginx-webmail.conf /conf/
 COPY start.py /start.py
