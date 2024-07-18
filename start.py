@@ -57,7 +57,7 @@ plugins = dict((p, None) for p in env.get("ROUNDCUBE_PLUGINS", "").replace(" ", 
 if plugins:
     plugins["mailu"] = None
 else:
-    plugins = dict((k, None) for k in ["archive", "zipdownload", "markasjunk", "managesieve", "enigma", "carddav", "twofactor_gauthenticator"])
+    plugins = dict((k, None) for k in ["archive", "zipdownload", "markasjunk", "managesieve", "enigma", "carddav"])
 
 context["PLUGINS"] = ",".join(f"'{p}'" for p in plugins)
 

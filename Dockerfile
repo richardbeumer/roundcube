@@ -8,8 +8,8 @@ ENV \
   VIRTUAL_ENV=/app/venv \
   PATH="/app/venv/bin:${PATH}" \
   ROUNDCUBE_URL=https://github.com/roundcube/roundcubemail/releases/download/1.6.7/roundcubemail-1.6.7-complete.tar.gz \
-  CARDDAV_URL=https://github.com/blind-coder/rcmcarddav/releases/download/v5.1.0/carddav-v5.1.0.tar.gz \
-  MFA_URL=https://github.com/alexandregz/twofactor_gauthenticator.git 
+  CARDDAV_URL=https://github.com/blind-coder/rcmcarddav/releases/download/v5.1.0/carddav-v5.1.0.tar.gz 
+  #MFA_URL=https://github.com/alexandregz/twofactor_gauthenticator.git 
 
 WORKDIR /app  
 
@@ -43,12 +43,10 @@ RUN  apk add --update --no-cache \
  && cd /var/www \
  && curl -L -O ${ROUNDCUBE_URL} \
  && curl -L -O ${CARDDAV_URL} \
- && git clone  ${MFA_URL} \
  && ls *.tar.gz |xargs -n1 tar -xzf \
  && rm -f *.tar.gz \
  && mv roundcubemail-* roundcube \
  && mv carddav roundcube/plugins/ \
- && mv twofactor_gauthenticator roundcube/plugins/ \
  && cd roundcube \
  && rm -rf CHANGELOG INSTALL LICENSE README.md UPGRADING composer.json-dist installer \
  && rm -rf plugins/{autologon,example_addressbook,http_authentication,krb_authentication,new_user_identity,password,redundant_attachments,squirrelmail_usercopy,userinfo,virtuser_file,virtuser_query} \

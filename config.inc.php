@@ -83,3 +83,17 @@ $config['quota_zero_as_unlimited'] = true;
 {%- for inc in INCLUDES %}
 include('/overrides/{{ inc }}');
 {%- endfor %}
+
+// OAUTH2 Settings
+$config['oauth_provider'] = 'generic';
+$config['oauth_provider_name'] = 'Keycloak';
+$config['oauth_client_id'] = '{{ KEYCLOAK_CLIENT_ID }}';
+$config['oauth_client_secret'] = '{{ KEYCLOAK_SECRET }}';
+$config['oauth_auth_uri'] = 'https://{{ KEYCLOAK_HOST }}/realms/{{ KEYCLOAK_REALM }}/protocol/openid-connect/auth';
+$config['oauth_token_uri'] = 'https://{{ KEYCLOAK_HOST }}/realms/{{ KEYCLOAK_REALM }}/protocol/openid-connect/token';
+$config['oauth_identity_uri'] = 'https://{{ KEYCLOAK_HOST }}/realms/{{ KEYCLOAK_REALM }}/protocol/openid-connect/userinfo';
+$config['oauth_verify_peer'] = true;
+$config['oauth_scope'] = "email profile openid";
+$config['oauth_auth_parameters'] = [];
+$config['oauth_identity_fields'] = ['preferred_username'];
+$config['oauth_login_redirect'] = false;
