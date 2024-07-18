@@ -95,5 +95,5 @@ $config['oauth_identity_uri'] = 'https://{{ KEYCLOAK_HOST }}/realms/{{ KEYCLOAK_
 $config['oauth_verify_peer'] = true;
 $config['oauth_scope'] = "email profile openid";
 $config['oauth_auth_parameters'] = [];
-$config['oauth_identity_fields'] = ['preferred_username'];
+$config['oauth_identity_fields'] = ['email'];
 $config['oauth_login_redirect'] = false;
