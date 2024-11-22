@@ -1,5 +1,5 @@
 # NOTE: only add file if building for arm
-FROM php:8.3-alpine AS build
+FROM php:8.4-alpine AS build
 
 ARG MAILU_UID=1000
 ARG MAILU_GID=1000
